@@ -137,14 +137,12 @@ class AdaBoost:
         return self  
             
     def error_rate(self, y_true, y_pred, weights):
-        # =================================================================
-        # TODO 
-
-        # Implement the weighted error rate
-        # =================================================================
-        # your code here
-        return np.sum(weights * (y_pred != y_true)) / np.sum(weights)
-        
+        # calculate the weighted error rate
+        error = 0
+        for i in range(len(y_true)):
+            if y_true[i] != y_pred[i]:
+                error += weights[i]
+        return error / np.sum(weights)
         
     def predict(self, X):
         """
