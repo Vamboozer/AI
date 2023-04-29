@@ -92,7 +92,7 @@ class AdaBoost:
         
     def fit(self, X_train, y_train):
         """
-        Train AdaBoost classifier on data. Sets alphas and learners. 
+        Train AdaBoost classifier on data. Sets alpha and learners. 
         
         Args:
             X_train (ndarray): [n_samples x n_features] ndarray of training data   
@@ -123,14 +123,14 @@ class AdaBoost:
         # your code here
         n = X_train.shape[0]
         w = np.full(n, 1/n)
-        for i in range(self.num_learners):
+        for i in range(self.n_learners):
             learner = DecisionTreeClassifier(max_depth=1)
             learner.fit(X_train, y_train, sample_weight=w)
             predictions = learner.predict(X_train)
             error = np.sum(w*(predictions!=y_train))/np.sum(w)
             alpha = np.log((1-error)/error)
             self.learners.append(learner)
-            self.alphas.append(alpha)
+            self.alpha.append(alpha)
             w = w*np.exp(alpha*(predictions!=y_train))
             w /= np.sum(w)
         
@@ -162,7 +162,7 @@ class AdaBoost:
         
         # your code here
         for i in range(self.num_learners):
-            yhat += self.alphas[i] * self.learners[i].predict(X)
+            yhat += self.alpha[i] * self.learners[i].predict(X)
         return np.sign(yhat)
     
     def score(self, X, y):
