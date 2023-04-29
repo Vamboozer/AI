@@ -121,6 +121,18 @@ class AdaBoost:
         # =================================================================
         
         # your code here
+        n = X_train.shape[0]
+        w = np.full(n, 1/n)
+        for i in range(self.num_learners):
+            learner = DecisionTreeClassifier(max_depth=1)
+            learner.fit(X_train, y_train, sample_weight=w)
+            predictions = learner.predict(X_train)
+            error = np.sum(w*(predictions!=y_train))/np.sum(w)
+            alpha = np.log((1-error)/error)
+            self.learners.append(learner)
+            self.alphas.append(alpha)
+            w = w*np.exp(alpha*(predictions!=y_train))
+            w /= np.sum(w)
         
         return self  
             
@@ -131,6 +143,7 @@ class AdaBoost:
         # Implement the weighted error rate
         # =================================================================
         # your code here
+        return np.sum(weights * (y_pred != y_true)) / np.sum(weights)
         
         
     def predict(self, X):
@@ -150,7 +163,9 @@ class AdaBoost:
         yhat = np.zeros(X.shape[0])
         
         # your code here
-        
+        for i in range(self.num_learners):
+            yhat += self.alphas[i] * self.learners[i].predict(X)
+        return np.sign(yhat)
     
     def score(self, X, y):
         """
@@ -165,7 +180,8 @@ class AdaBoost:
         """
         
         # your code here
-        
+        predictions = self.predict(X)
+        return np.sum(predictions == y) / X.shape[0]
     
     def staged_score(self, X, y):
         """
@@ -183,9 +199,12 @@ class AdaBoost:
 
         scores = []
         
-        
         # your code here
-        
+        for i in range(1, self.num_learners + 1):
+            predictions = np.zeros(X.shape[0])
+            for j in range(i):
+                predictions += self.alphas[j] * self.learners[j].predict(X)
+            scores.append(np.sum(np.sign(predictions) == y) / X.shape[0])
         
         return np.array(scores) 
 
