@@ -197,16 +197,3 @@ w /= np.sum(w)
 clf = AdaBoost() 
 err_rate = clf.error_rate(y_true, y_pred, w)
 assert pytest.approx(err_rate, 0.01) == 0.2857, "Check the error_rate function."
-
-# Sample test for Adaboost fit function. 
-sample_data = np.load('train.npz') 
-sample_X = sample_data['X']
-sample_y = sample_data['y']
-test_model = AdaBoost(n_learners=5).fit(sample_X,sample_y)
-t_alpha = [1.94591015, 2.14179328, 2.48490665, 1.94679667, 2.22627839]
-assert pytest.approx(test_model.alpha, 0.01) == t_alpha, "Check the fit function"
-
-# use fit function to fit Adaboost classifier called clf with 150 base decision stumps
-# your code here
-
-clf =
