@@ -57,7 +57,7 @@ def view_digit(ex, label=None, feature=None):
     plt.xticks([]), plt.yticks([])
     
 #data = ThreesandEights("data/mnist21x21_3789.pklz")
-url = "https://raw.githubusercontent.com/Vamboozer/AI/main/mnist21x21_3789.pkl"
+url = "https://github.com/Vamboozer/AI/blob/cf482ca9e0f0a8c5829f03b4d518e360585fbae8/mnist21x21_3789.pkl"
 data = ThreesandEights(url)
 
 view_digit(data.x_train[0], data.y_train[0])
