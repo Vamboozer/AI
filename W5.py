@@ -6,6 +6,7 @@ from sklearn import tree
 from sklearn.model_selection import train_test_split
 import matplotlib.pylab as plt 
 %matplotlib inline 
+import pytest
 
 class ThreesandEights:
     """
@@ -61,5 +62,151 @@ data = ThreesandEights(url)
 
 view_digit(data.x_train[0], data.y_train[0])
 
-# ========== Building an Adaboost Classifier to classify MNIST digits 3 and 8 ============
+# ========== Problem 1: Building an Adaboost Classifier to classify MNIST digits 3 and 8 ============
 
+# ====== Part A ======
+
+class AdaBoost:
+    def __init__(self, n_learners=20, base=DecisionTreeClassifier(max_depth=3), random_state=1234):
+        """
+        Create a new adaboost classifier.
+        
+        Args:
+            N (int, optional): Number of weak learners in classifier.
+            base (BaseEstimator, optional): Your general weak learner 
+            random_state (int, optional): set random generator.  needed for unit testing. 
+
+        Attributes:
+            base (estimator): Your general weak learner 
+            n_learners (int): Number of weak learners in classifier.
+            alpha (ndarray): Coefficients on weak learners. 
+            learners (list): List of weak learner instances. 
+        """
+        
+        np.random.seed(42)
+        
+        self.n_learners = n_learners 
+        self.base = base
+        self.alpha = np.zeros(self.n_learners)
+        self.learners = []
+        
+    def fit(self, X_train, y_train):
+        """
+        Train AdaBoost classifier on data. Sets alphas and learners. 
+        
+        Args:
+            X_train (ndarray): [n_samples x n_features] ndarray of training data   
+            y_train (ndarray): [n_samples] ndarray of data 
+        """
+
+        # =================================================================
+        # TODO 
+
+        # Note: You can create and train a new instantiation 
+        # of your sklearn decision tree as follows 
+        # you don't have to use sklearn's fit function, 
+        # but it is probably the easiest way 
+
+        # w = np.ones(len(y_train))
+        # w /= np.sum(w) 
+        # for loop
+        #   h = clone(self.base)
+        #   h.fit(X_train, y_train, sample_weight=w)
+        #   ...
+        #
+        #
+        #   ...
+        #   Save alpha and learner
+        
+        # =================================================================
+        
+        # your code here
+        
+        return self  
+            
+    def error_rate(self, y_true, y_pred, weights):
+        # =================================================================
+        # TODO 
+
+        # Implement the weighted error rate
+        # =================================================================
+        # your code here
+        
+        
+    def predict(self, X):
+        """
+        Adaboost prediction for new data X.
+        
+        Args:
+            X (ndarray): [n_samples x n_features] ndarray of data 
+            
+        Returns: 
+            yhat (ndarray): [n_samples] ndarray of predicted labels {-1,1}
+        """
+
+        # =================================================================
+        # TODO
+        # =================================================================
+        yhat = np.zeros(X.shape[0])
+        
+        # your code here
+        
+    
+    def score(self, X, y):
+        """
+        Computes prediction accuracy of classifier.  
+        
+        Args:
+            X (ndarray): [n_samples x n_features] ndarray of data 
+            y (ndarray): [n_samples] ndarray of true labels  
+            
+        Returns: 
+            Prediction accuracy (between 0.0 and 1.0).
+        """
+        
+        # your code here
+        
+    
+    def staged_score(self, X, y):
+        """
+        Computes the ensemble score after each iteration of boosting 
+        for monitoring purposes, such as to determine the score on a 
+        test set after each boost.
+        
+        Args:
+            X (ndarray): [n_samples x n_features] ndarray of data 
+            y (ndarray): [n_samples] ndarray of true labels  
+            
+        Returns: 
+            scores (ndarary): [n_learners] ndarray of scores 
+        """
+
+        scores = []
+        
+        
+        # your code here
+        
+        
+        return np.array(scores) 
+
+# Sample test for Adaboost error rate function. 
+y_true = [-1, 1, 1, -1, 1, -1, -1]
+y_pred = [-1, 1, 1, 1, 1, -1, 1]
+w = np.ones(len(y_true))
+w /= np.sum(w)
+clf = AdaBoost() 
+err_rate = clf.error_rate(y_true, y_pred, w)
+assert pytest.approx(err_rate, 0.01) == 0.2857, "Check the error_rate function."
+
+# Sample test for Adaboost fit function. 
+sample_data = np.load('train.npz') 
+sample_X = sample_data['X']
+sample_y = sample_data['y']
+test_model = AdaBoost(n_learners=5).fit(sample_X,sample_y)
+t_alpha = [1.94591015, 2.14179328, 2.48490665, 1.94679667, 2.22627839]
+assert pytest.approx(test_model.alpha, 0.01) == t_alpha, "Check the fit function"
+
+# use fit function to fit Adaboost classifier called clf with 150 base decision stumps
+# your code here
+
+clf =
