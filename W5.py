@@ -67,12 +67,12 @@ view_digit(data.x_train[0], data.y_train[0])
 # ====== Part A ======
 
 class AdaBoost:
-    def __init__(self, n_learners=20, base=DecisionTreeClassifier(max_depth=3), random_state=1234):
+    def __init__(self, n_learners=20, base=DecisionTreeClassifier(max_depth=3), random_state=42):
         """
         Create a new adaboost classifier.
         
         Args:
-            N (int, optional): Number of weak learners in classifier.
+            n_learners (int, optional): Number of weak learners in classifier.
             base (BaseEstimator, optional): Your general weak learner 
             random_state (int, optional): set random generator.  needed for unit testing. 
 
@@ -83,7 +83,7 @@ class AdaBoost:
             learners (list): List of weak learner instances. 
         """
         
-        np.random.seed(42)
+        np.random.seed(random_state)
         
         self.n_learners = n_learners 
         self.base = base
