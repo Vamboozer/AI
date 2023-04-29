@@ -121,8 +121,8 @@ class AdaBoost:
         # =================================================================
         
         # your code here
-        n = X_train.shape[0]
-        w = np.full(n, 1/n)
+        w = np.ones(len(y_train))
+        w /= np.sum(w)
         for i in range(self.n_learners):
             learner = DecisionTreeClassifier(max_depth=1)
             learner.fit(X_train, y_train, sample_weight=w)
