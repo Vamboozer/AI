@@ -127,10 +127,11 @@ class AdaBoost:
             learner = DecisionTreeClassifier(max_depth=1)
             learner.fit(X_train, y_train, sample_weight=w)
             predictions = learner.predict(X_train)
-            error = np.sum(w*(predictions!=y_train))/np.sum(w)
+            #error = np.sum(w*(predictions!=y_train))/np.sum(w)
+            error = self.error_rate(y_train, predictions, w)
             alpha = np.log((1-error)/error)
             self.learners.append(learner)
-            self.alpha.append(alpha)
+            self.alpha[i] += alpha
             w = w*np.exp(alpha*(predictions!=y_train))
             w /= np.sum(w)
         
