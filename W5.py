@@ -324,6 +324,23 @@ class RandomForest():
         # add the trained decision tree classifier to the trees list
         return clf
 
+        def predict(self, x):
+            
+            # TODO: create a vector of predictions  and return
+            # You will have to return the predictions of the final ensembles based on the individual trees' predicitons
+            
+            
+            # your code here
+            
+            return 0.0
+        
+        def score(self, X, y):
+            
+            # TODO: Compute the score using the predict function and true labels y
+            
+            # your code here
+            
+
 # ====== Problem 2, Part B ======
 
 # TODO: build a random forest classifier and make predictions
