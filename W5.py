@@ -104,12 +104,14 @@ class AdaBoost:
         w /= np.sum(w)
         for i in range(self.n_learners):
             learner = self.base
-            learner.fit(X_train, y_train, sample_weight=w)
+            self.learners.append(learner)
+            
+        for i in range(self.n_learners):
+            self.learners[i].fit(X_train, y_train, sample_weight=w)
             #predictions = learner.predict(X_train)
             predictions = self.predict(X_train)
             err_k = self.error_rate(y_train, predictions, w)
             alpha_k = 0.5 * np.log((1 - err_k) / err_k)
-            self.learners.append(learner)
             self.alpha[i] = alpha_k
             w = w * np.exp(-alpha_k * y_train * predictions)
             w = w / np.sum(w)
