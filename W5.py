@@ -325,27 +325,23 @@ class RandomForest():
         return clf
 
         def predict(self, x):
-            
-            # TODO: create a vector of predictions  and return
+            # Create a vector of predictions  and return
             # You will have to return the predictions of the final ensembles based on the individual trees' predicitons
-            
-            
-            # your code here
-            
-            return 0.0
+            return np.mean([learner.predict(x[:, self.features_set[i]]) for i, learner in enumerate(self.learners)], axis=0)
         
         def score(self, X, y):
-            
-            # TODO: Compute the score using the predict function and true labels y
-            
-            # your code here
-            
+            # Compute the score using the predict function and true labels y
+            return np.mean(self.predict(X) == y)
+
 
 # ====== Problem 2, Part B ======
 
-# TODO: build a random forest classifier and make predictions
+# Build a random forest classifier and make predictions
 
-# your code here
+# initialize random forest classifier
+rf = RandomForest(x=data.x_train, y=data.y_train, sample_sz=100)
 
+# compute misclassification error on test data
+pred_score = rf.score(data.x_test, data.y_test)
 
 print('Misclassification error on test data : %0.3f'%pred_score)
