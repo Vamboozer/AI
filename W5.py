@@ -100,19 +100,27 @@ class AdaBoost:
         """
         
         # your code here
-        w = np.ones(len(y_train))
-        w /= np.sum(w)
+        w = np.ones(len(y_train)) / len(y_train)
+
         for i in range(self.n_learners):
-            learner = self.base
+            # fit the base learner with the weighted data
+            learner = clone(self.base)
             learner.fit(X_train, y_train, sample_weight=w)
-            self.learners.append(learner)
-            #predictions = learner.predict(X_train)
-            predictions = self.predict(X_train)
-            err_k = self.error_rate(y_train, predictions, w)
+
+            # compute the weighted predictions of the learner
+            pred = learner.predict(X_train)
+            #err_k = self.error_rate(y_train, pred, w)
+            err_k = 1 - np.sum(w * np.equal(y_train, pred)) / np.sum(w)
             alpha_k = 0.5 * np.log((1 - err_k) / err_k)
+
+            # update the weights
+            w *= np.exp(-alpha_k * y_train * pred)
+            w /= np.sum(w)
+            # print(np.sum(w))
+
+            # append the learner and alpha to their respective lists
+            self.learners.append(learner)
             self.alpha[i] = alpha_k
-            w = w * np.exp(-alpha_k * y_train * predictions)
-            w = w / np.sum(w)
         
         return self  
             
