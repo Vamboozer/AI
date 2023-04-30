@@ -98,42 +98,21 @@ class AdaBoost:
             X_train (ndarray): [n_samples x n_features] ndarray of training data   
             y_train (ndarray): [n_samples] ndarray of data 
         """
-
-        # =================================================================
-        # TODO 
-
-        # Note: You can create and train a new instantiation 
-        # of your sklearn decision tree as follows 
-        # you don't have to use sklearn's fit function, 
-        # but it is probably the easiest way 
-
-        # w = np.ones(len(y_train))
-        # w /= np.sum(w) 
-        # for loop
-        #   h = clone(self.base)
-        #   h.fit(X_train, y_train, sample_weight=w)
-        #   ...
-        #
-        #
-        #   ...
-        #   Save alpha and learner
-        
-        # =================================================================
         
         # your code here
         w = np.ones(len(y_train))
         w /= np.sum(w)
         for i in range(self.n_learners):
-            learner = DecisionTreeClassifier(max_depth=1)
+            learner = self.base
             learner.fit(X_train, y_train, sample_weight=w)
-            predictions = learner.predict(X_train)
-            #error = np.sum(w*(predictions!=y_train))/np.sum(w)
-            error = self.error_rate(y_train, predictions, w)
-            alpha = np.log((1-error)/error)
+            #predictions = learner.predict(X_train)
+            predictions = self.predict(X_train)
+            err_k = self.error_rate(y_train, predictions, w)
+            alpha_k = 0.5 * np.log((1 - err_k) / err_k)
             self.learners.append(learner)
-            self.alpha[i] += alpha
-            w = w*np.exp(alpha*(predictions!=y_train))
-            w /= np.sum(w)
+            self.alpha[i] = alpha_k
+            w = w * np.exp(-alpha_k * y_train * predictions)
+            w = w / np.sum(w)
         
         return self  
             
@@ -162,7 +141,7 @@ class AdaBoost:
         yhat = np.zeros(X.shape[0])
         
         # your code here
-        for i in range(self.num_learners):
+        for i in range(self.n_learners):
             yhat += self.alpha[i] * self.learners[i].predict(X)
         return np.sign(yhat)
     
@@ -223,4 +202,6 @@ sample_X = np.load('https://raw.githubusercontent.com/Vamboozer/AI/main/X.npy')
 sample_y = np.load('https://raw.githubusercontent.com/Vamboozer/AI/main/y.npy')
 test_model = AdaBoost(n_learners=5).fit(sample_X,sample_y)
 t_alpha = [1.94591015, 2.14179328, 2.48490665, 1.94679667, 2.22627839]
+print(t_alpha)
+print(test_model.alpha)
 assert pytest.approx(test_model.alpha, 0.01) == t_alpha, "Check the fit function"
