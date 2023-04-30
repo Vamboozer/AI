@@ -213,3 +213,20 @@ t_alpha = [1.94591015, 2.14179328, 2.48490665, 1.94679667, 2.22627839]
 print(t_alpha)
 print(test_model.alpha)
 assert pytest.approx(test_model.alpha, 0.01) == t_alpha, "Check the fit function"
+
+
+# create the Adaboost classifier with 150 base decision tree stumps
+clf = AdaBoost(base=DecisionTreeClassifier(max_depth=1), n_learners=150)
+
+# fit the classifier to the training data
+clf.fit(data.x_train, data.y_train)
+
+# ====== Part B ======
+
+# print out predictions on the training set 
+
+train_predict = 
+
+print(train_predict)
+
+max(train_predict)
