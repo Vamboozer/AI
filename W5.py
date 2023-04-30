@@ -309,10 +309,26 @@ class RandomForest():
         else:
             self.features_set = np.append(self.features_set, np.array(f_idxs,ndmin=2),axis=0)
         
-        # TODO: build a decision tree classifier and train it with x and y that is a subset of data (use idxs and f_idxs)
+        # build a decision tree classifier and train it with x and y that is a subset of data (use idxs and f_idxs)
         
-        # your code here
-        
-        clf = 
-        x, y =
+        # subset the data
+        x = self.x[idxs][:, f_idxs]
+        y = self.y[idxs]
 
+        # build decision tree classifier
+        clf = DecisionTreeClassifier(max_depth=self.max_depth, random_state=42)
+
+        # train the decision tree classifier
+        clf.fit(x, y)
+
+        # add the trained decision tree classifier to the trees list
+        return clf
+
+# ====== Problem 2, Part B ======
+
+# TODO: build a random forest classifier and make predictions
+
+# your code here
+
+
+print('Misclassification error on test data : %0.3f'%pred_score)
