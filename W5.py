@@ -143,15 +143,18 @@ class AdaBoost:
             yhat (ndarray): [n_samples] ndarray of predicted labels {-1,1}
         """
 
-        # =================================================================
-        # TODO
-        # =================================================================
-        yhat = np.zeros(X.shape[0])
-        
-        # your code here
+        # initialize predictions
+        y_pred = np.zeros(len(X))
+
+        # for each learner, compute the weighted prediction and add it to y_pred
         for i in range(self.n_learners):
-            yhat += self.alpha[i] * self.learners[i].predict(X)
-        return np.sign(yhat)
+            pred = self.learners[i].predict(X)
+            y_pred += self.alpha[i] * pred
+
+        # convert predictions to {-1, 1}
+        y_pred = np.sign(y_pred)
+
+        return y_pred
     
     def score(self, X, y):
         """
@@ -225,8 +228,11 @@ clf.fit(data.x_train, data.y_train)
 
 # print out predictions on the training set 
 
-train_predict = 
+train_predict = clf.predict(data.x_train)
 
 print(train_predict)
 
 max(train_predict)
+
+# ====== Part C ======
+
