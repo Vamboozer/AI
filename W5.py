@@ -89,6 +89,7 @@ class AdaBoost:
         self.base = base
         self.alpha = np.zeros(self.n_learners)
         self.learners = []
+        self.train_scores = []
         
     def fit(self, X_train, y_train):
         """
@@ -121,6 +122,10 @@ class AdaBoost:
             # append the learner and alpha to their respective lists
             self.learners.append(learner)
             self.alpha[i] = alpha_k
+
+            # compute and store the score for this iteration
+            score_train = self.score(X_train, y_train)
+            self.train_scores.append(score_train)
         
         return self  
             
@@ -147,7 +152,7 @@ class AdaBoost:
         y_pred = np.zeros(len(X))
 
         # for each learner, compute the weighted prediction and add it to y_pred
-        for i in range(self.n_learners):
+        for i in range(len(self.learners)):
             pred = self.learners[i].predict(X)
             y_pred += self.alpha[i] * pred
 
@@ -236,3 +241,22 @@ max(train_predict)
 
 # ====== Part C ======
 
+# compare to actual labels
+print('Training set accuracy:', np.mean(train_predict == data.y_train))
+
+# compute scores for train and test sets
+train_scores = clf.staged_score(data.x_train, data.y_train)
+test_scores = clf.staged_score(data.x_test, data.y_test)
+
+# compute misclassification errors
+train_errors = 1 - np.array(train_scores)
+test_errors = 1 - np.array(test_scores)
+
+# plot errors
+plt.plot(range(1, clf.n_learners + 1), train_errors, label='train')
+plt.plot(range(1, clf.n_learners + 1), test_errors, label='test')
+plt.xlabel('Number of Boosting Iterations')
+plt.ylabel('Misclassification Error')
+plt.title('AdaBoost')
+plt.legend()
+plt.show()
