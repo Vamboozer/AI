@@ -64,7 +64,7 @@ view_digit(data.x_train[0], data.y_train[0])
 
 # ========== Problem 1: Building an Adaboost Classifier to classify MNIST digits 3 and 8 ============
 
-# ====== Part A ======
+# ====== Problem 1, Part A ======
 
 class AdaBoost:
     def __init__(self, n_learners=20, base=DecisionTreeClassifier(max_depth=3), random_state=42):
@@ -194,7 +194,7 @@ class AdaBoost:
         scores = []
         
         # your code here
-        for i in range(1, self.num_learners + 1):
+        for i in range(1, self.n_learners + 1):
             predictions = np.zeros(X.shape[0])
             for j in range(i):
                 predictions += self.alphas[j] * self.learners[j].predict(X)
@@ -229,7 +229,7 @@ clf = AdaBoost(base=DecisionTreeClassifier(max_depth=1), n_learners=150)
 # fit the classifier to the training data
 clf.fit(data.x_train, data.y_train)
 
-# ====== Part B ======
+# ====== Problem 1, Part B ======
 
 # print out predictions on the training set 
 
@@ -239,7 +239,7 @@ print(train_predict)
 
 max(train_predict)
 
-# ====== Part C ======
+# ====== Problem 1, Part C ======
 
 # compare to actual labels
 print('Training set accuracy:', np.mean(train_predict == data.y_train))
@@ -260,3 +260,59 @@ plt.ylabel('Misclassification Error')
 plt.title('AdaBoost')
 plt.legend()
 plt.show()
+
+# ========== Problem 2: Building an Random Forest Classifier to classify MNIST digits 3 and 8 ============
+
+# ====== Problem 2, Part A ======
+
+class RandomForest():
+    
+    def __init__(self, x, y, sample_sz, n_trees=200, n_features='sqrt', max_depth=10, min_samples_leaf=5):
+        """
+        Create a new random forest classifier.
+        
+        Args:
+            x : Input Feature vector
+            y : Corresponding Labels
+            sample_sz : Sample size
+            n_trees : Number of trees to ensemble
+            n_features : Method to select subset of features 
+            max_depth : Maximum depth of the trees in the ensemble
+            min_sample_leaf : Minimum number of samples per leaf 
+        """
+        np.random.seed(42)
+        if n_features == 'sqrt':
+            self.n_features = int(np.sqrt(x.shape[1]))
+        elif n_features == 'log2':
+            self.n_features = int(np.log2(x.shape[1]))
+        else:
+            self.n_features = n_features
+        print(self.n_features, "sha: ",x.shape[1])  
+        self.features_set = []
+        self.x, self.y, self.sample_sz, self.max_depth, self.min_samples_leaf  = x, y, sample_sz, max_depth, min_samples_leaf
+        self.trees = [self.create_tree(i) for i in range(n_trees)]
+
+    def create_tree(self,i):
+        """
+        create a single decision tree classifier
+        """
+        
+        idxs = np.random.permutation(len(self.y))[:self.sample_sz]
+        idxs = np.asarray(idxs)
+
+        f_idxs = np.random.permutation(self.x.shape[1])[:self.n_features]
+        f_idxs = np.asarray(f_idxs)
+        
+        
+        if i==0:
+            self.features_set = np.array(f_idxs, ndmin=2)
+        else:
+            self.features_set = np.append(self.features_set, np.array(f_idxs,ndmin=2),axis=0)
+        
+        # TODO: build a decision tree classifier and train it with x and y that is a subset of data (use idxs and f_idxs)
+        
+        # your code here
+        
+        clf = 
+        x, y =
+
