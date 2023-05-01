@@ -188,3 +188,35 @@ nonzero_slack = Outbound_support_vectors
 # Compute the slack 𝜉𝑖 associated with the misclassified points.
 
 # Slack Formula:  ξi = 1 − yi ( wT xi + b )
+
+slack = []
+for i in range(len(X)):
+    xi = X[i]
+    yi = y[i]
+    if yi * (np.dot(w, xi) + b) < 1:
+        xi_slack = 1 - (yi * (np.dot(w, xi) + b))
+        slack.append(xi_slack)
+    else:
+        slack.append(0)
+        
+print(f"The slack for each training example is: {slack}")
+
+# ====== Problem 2; The Margin vs Slack ======
+
+# ====== Problem 2, Part A ======
+
+X, y = part2data()
+linear_plot(X, y)
+
+from sklearn.svm import LinearSVC
+
+# TODO: Build a LinearSVC model called lsvm. Train the model and get the parameters, pay attention to the loss parameter
+lsvm = None
+# your code here
+
+
+# use this code to plot the resulting model
+w = lsvm.coef_[0]
+b = lsvm.intercept_
+print(w,b)
+linear_plot(X, y, w=w, b=b)
