@@ -156,3 +156,27 @@ w, b = np.array([-1/4, 1/4]), -1/4
 # Plot the data and support vector boundaries 
 linear_plot(X, y, w=w, b=b)
 
+# ? What is the margin of this particular SVM?
+
+# Calculate margin
+margin = 1 / np.linalg.norm(w)
+
+print(f"The margin of the SVM is: {margin}")
+
+# ====== Problem 1, Part B ======
+
+# ? Which training examples are the support vectors? Assign the coordinate in the list. e.g. support_vectors = [(1,0),(0,0)]
+
+support_vectors = [(5,2),(-5,0),(6,3),(-5,1)]
+
+print(f"The support vectors are:")
+for sv in support_vectors:
+    print(sv)
+
+Inbound_support_vectors =  [(5,2),(-5,0)]
+Outbound_support_vectors = [(6,3),(-5,1)]
+
+# ====== Problem 1, Part C ======
+
+# ? Which training examples have nonzero slack? List their coordinates.
+
