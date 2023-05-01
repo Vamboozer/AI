@@ -180,3 +180,11 @@ Outbound_support_vectors = [(6,3),(-5,1)]
 
 # ? Which training examples have nonzero slack? List their coordinates.
 
+# list of coordinates with nonzero slack 
+nonzero_slack = Outbound_support_vectors
+
+# ====== Problem 1, Part D ======
+
+# Compute the slack 𝜉𝑖 associated with the misclassified points.
+
+# Slack Formula:  ξi = 1 − yi ( wT xi + b )
