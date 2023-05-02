@@ -210,13 +210,15 @@ linear_plot(X, y)
 
 from sklearn.svm import LinearSVC
 
-# TODO: Build a LinearSVC model called lsvm. Train the model and get the parameters, pay attention to the loss parameter
-lsvm = None
-# your code here
-
+# Build a LinearSVC model called lsvm. Train the model and get the parameters, pay attention to the loss parameter
+lsvm = LinearSVC(C=1, loss='hinge')
+lsvm.fit(X, y)
 
 # use this code to plot the resulting model
 w = lsvm.coef_[0]
 b = lsvm.intercept_
 print(w,b)
 linear_plot(X, y, w=w, b=b)
+
+# ====== Problem 3; Nonlinear SVM, Parameter Tuning, Accuracy, and Cross-Validation ======
+
